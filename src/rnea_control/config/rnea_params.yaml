@@ -1,0 +1,16 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 1000
+    use_sim_time: true
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+    rnea_controller:
+      type: rnea_control/rneacontroller
+
+rnea_controller:
+  ros__parameters:
+    joints:
+      - joint1
+
+    gravity: [0.0, 0.0, -9.81]
+    mode: inverse_dynamics

@@ -1,0 +1,6 @@
+<library path="rnea_control">
+  <class name="rnea_control/rneacontroller" 
+         type="rnea_control::rneacontroller" 
+         base_class_type="controller_interface::ControllerInterface">
+  </class>
+</library>

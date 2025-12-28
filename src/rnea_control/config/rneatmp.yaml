@@ -1,0 +1,45 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 1000
+    use_sim_time: true
+
+    rnea_controller:
+      type: rnea_control/rneacontroller
+
+rnea_controller:
+  ros__parameters:
+    # Danh sách tên các khớp
+    joints:
+      - joint_1
+      - joint_2
+      - joint_3
+      - joint_4
+      - joint_5
+    # Thông số động lực học cho từng Link (Link i đi kèm với Joint i)
+    robot_description_parameters:
+      link_1:
+        mass:  838.11 #grams
+        com: [0.0, 0.0, 0.0]
+        # Ma trận quán tính 3x3 viết dưới dạng mảng phẳng 9 phần tử
+        inertia: [ 4852242.85, 0, 0, 0, 4852242.85, 0, 0, 0, 9641781.40] #g*mm2
+        p: [0.0, 0.0, 6.376] #mm
+      link_2:
+        mass: 286.79
+        com: [0.0, 0.0, 30.11]
+        inertia: [ 558028.67, 0.0, 0.0, 0.0,  630242.25, 0.0, 0.0, 0.0 ,270987.79]
+        p: [0.0, 0.0, 50]
+      link_3:
+        mass:  497.90
+        com: [85.30, 0.0, 0.0]
+        inertia: [ 400417.53, 84575.16, 0.0,  84575.16, 3672540.63, 0.0, 0.0, 0.0, 3454956.04]
+        p: [200, 0.0, 0.0]
+      link_4:
+        mass: 427.29
+        com: [85.30, 0, 0.0]
+        inertia: [  159415.43,  -0.80,  0.57,  -0.80,  3452688.33, -0.47, 0.57, -0.47, 3424405.55]
+        p: [150, 0.0, 0.0]
+      link_5:
+        mass:  59.28
+        com: [22.18, 0.0, 0.0]
+        inertia: [   12554.75, 0.0, 0.0, 0.0, 60744.64, 0.0, 0.0, 0.0,  62313.62]
+        p: [55,0.0, 0.0]
