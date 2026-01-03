@@ -1,16 +1,57 @@
 controller_manager:
   ros__parameters:
-    update_rate: 1000
+    update_rate: 1000  # Hz
     use_sim_time: true
+
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
+
     rnea_controller:
       type: rnea_control/rneacontroller
 
 rnea_controller:
   ros__parameters:
     joints:
-      - joint1
+      - joint_1
+      - joint_2
+      - joint_3
+      - joint_4
+      - joint_5
+      
+    robot_description_parameters:
+      link1:
+        type: "prismatic"
+        mass: 0.83811  # SỬA 2: Đổi gram -> kg (838g -> 0.8kg)
+        com: [0.0, 0.0, 0.0]
+        # SỬA 3: Đổi g*mm2 -> kg*m2 (Chia cho 10^9 hoặc lấy số nhỏ tượng trưng)
+        # Giá trị thực tế 4852242 g*mm2 = 0.00485 kg*m2
+        inertia: [0.00485, 0.0, 0.0, 0.0, 0.00485, 0.0, 0.0, 0.0, 0.00964]
+        p: [0.0, 0.0, 0.006376] # SỬA 4: Đổi mm -> m (6.3mm -> 0.006m)
+      
+      link2:
+        type: "revolute"
+        mass: 0.28679
+        com: [0.0, 0.0, 0.03011]
+        inertia: [0.00055, 0.0, 0.0, 0.0, 0.00063, 0.0, 0.0, 0.0, 0.00027]
+        p: [0.0, 0.0, 0.05] # 50mm -> 0.05m
 
-    gravity: [0.0, 0.0, -9.81]
-    mode: inverse_dynamics
+      link3:
+        type: "revolute"
+        mass: 0.4979
+        com: [0.0853, 0.0, 0.0]
+        inertia: [0.0004, 0.00008, 0.0, 0.00008, 0.00367, 0.0, 0.0, 0.0, 0.00345]
+        p: [0.2, 0.0, 0.0] # 200mm -> 0.2m
+
+      link4:
+        type: "revolute"
+        mass: 0.42729
+        com: [0.0853, 0.0, 0.0]
+        inertia: [0.00015, 0.0, 0.0, 0.0, 0.00345, 0.0, 0.0, 0.0, 0.00342]
+        p: [0.15, 0.0, 0.0] # 150mm -> 0.15m
+
+      link5:
+        type: "revolute"
+        mass: 0.05928
+        com: [0.02218, 0.0, 0.0]
+        inertia: [0.00001, 0.0, 0.0, 0.0, 0.00006, 0.0, 0.0, 0.0, 0.00006]
+        p: [0.055, 0.0, 0.0] # 55mm -> 0.055m
