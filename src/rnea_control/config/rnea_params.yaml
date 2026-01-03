@@ -1,6 +1,6 @@
 controller_manager:
   ros__parameters:
-    update_rate: 1000  # Hz
+    update_rate: 100  # Hz
     use_sim_time: true
 
     joint_state_broadcaster:
@@ -17,7 +17,16 @@ rnea_controller:
       - joint_3
       - joint_4
       - joint_5
-      
+    
+    gains:
+      # Joint 1 (Tịnh tiến): Kp cần lớn để thắng ma sát trượt
+      joint_1: {p: 1000.0, d: 50.0} 
+      # Joint 2-5 (Xoay): Kp vừa phải
+      joint_2: {p: 500.0, d: 10.0}
+      joint_3: {p: 500.0, d: 10.0}
+      joint_4: {p: 200.0, d: 5.0}
+      joint_5: {p: 100.0, d: 2.0}
+
     robot_description_parameters:
       link1:
         type: "prismatic"
