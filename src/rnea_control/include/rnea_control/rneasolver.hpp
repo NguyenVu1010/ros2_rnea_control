@@ -5,19 +5,27 @@
 #include <vector>
 #include <cmath>
 #include <iostream>
-#include <string>
 
 namespace rnea_control {
 
-// 1. Định nghĩa Enum cho loại khớp
+// 1. Định nghĩa loại khớp
 enum JointType { REVOLUTE, PRISMATIC };
 
+// 2. Cấu trúc thông số Link (ĐÃ CẬP NHẬT THÊM DH PARAMS)
 struct LinkParams {
-    JointType type; // <--- Thêm biến này
+    JointType type;
     double m;
     Eigen::Vector3d com;
     Eigen::Matrix3d I;
-    Eigen::Vector3d p; 
+    Eigen::Vector3d p;
+    
+    // --- THÊM 4 BIẾN NÀY ĐỂ SỬA LỖI ---
+    double a;
+    double alpha;
+    double d;
+    double theta;
+    // ----------------------------------
+
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
@@ -48,9 +56,8 @@ public:
 
         if (tau_out.size() != static_cast<size_t>(n_)) tau_out.resize(n_);
 
-        const Eigen::Vector3d z0(0, 0, 1); // Trục chuyển động luôn là Z trong hệ toạ độ gắn liền
+        const Eigen::Vector3d z0(0, 0, 1); 
         
-        // Gia tốc trọng trường (hướng lên để tạo phản lực)
         dv_[0] = Eigen::Vector3d(0, 0, 9.81); 
         w_[0].setZero();
         dw_[0].setZero();
@@ -60,37 +67,28 @@ public:
             Eigen::Matrix3d R;
             Eigen::Vector3d p_curr = params_[i].p;
 
-            // Xử lý riêng cho từng loại khớp
             if (params_[i].type == REVOLUTE) {
-                // Khớp xoay: Ma trận xoay thay đổi theo q
                 R = get_rotation_matrix(q[i]);
             } else {
-                // Khớp tịnh tiến: Ma trận xoay cố định (Identity), 
-                // Vị trí p thay đổi theo q (dịch chuyển dọc trục Z)
                 R = Eigen::Matrix3d::Identity();
                 p_curr += z0 * q[i]; 
             }
 
-            Eigen::Matrix3d RT = R.transpose(); // Chuyển từ frame i-1 sang i
+            Eigen::Matrix3d RT = R.transpose();
 
             if (params_[i].type == REVOLUTE) {
-                // --- CÔNG THỨC KHỚP XOAY ---
                 w_[i+1] = RT * (w_[i] + z0 * dq[i]);
                 dw_[i+1] = RT * (dw_[i] + z0 * ddq[i] + w_[i].cross(z0 * dq[i]));
-                // Gia tốc tuyến tính
                 dv_[i+1] = RT * dv_[i] + dw_[i+1].cross(p_curr) + 
                            w_[i+1].cross(w_[i+1].cross(p_curr));
             } else {
-                // --- CÔNG THỨC KHỚP TỊNH TIẾN ---
                 w_[i+1] = RT * w_[i]; 
                 dw_[i+1] = RT * dw_[i];
-                // Gia tốc tuyến tính có thêm thành phần Coriolis (2 * w x v) và gia tốc tịnh tiến
                 dv_[i+1] = RT * (dv_[i] + z0 * ddq[i] + 2 * w_[i].cross(z0 * dq[i])) + 
                            dw_[i+1].cross(p_curr) + 
                            w_[i+1].cross(w_[i+1].cross(p_curr));
             }
             
-            // Lực quán tính tại trọng tâm (CoM)
             Eigen::Vector3d dv_c = dv_[i+1] + dw_[i+1].cross(params_[i].com) + 
                                   w_[i+1].cross(w_[i+1].cross(params_[i].com));
             
@@ -106,7 +104,6 @@ public:
             Eigen::Matrix3d R_next;
             Eigen::Vector3d p_next_curr = (i < n_ - 1) ? params_[i+1].p : Eigen::Vector3d::Zero();
 
-            // Tính R và p của khớp kế tiếp để chiếu lực về
             if (i < n_ - 1) {
                 if (params_[i+1].type == REVOLUTE) {
                     R_next = get_rotation_matrix(q[i+1]);
@@ -118,19 +115,16 @@ public:
                 R_next = Eigen::Matrix3d::Identity();
             }
             
-            // Cân bằng Lực
             f_ext_[i] = R_next * f_ext_[i+1] + F_i_[i];
             
-            // Cân bằng Momen
             n_ext_[i] = N_i_[i] + R_next * n_ext_[i+1] + 
                         params_[i].com.cross(F_i_[i]) + 
                         p_next_curr.cross(R_next * f_ext_[i+1]); 
             
-            // TÍNH ĐẦU RA (TORQUE HOẶC FORCE)
             if (params_[i].type == REVOLUTE) {
-                tau_out[i] = n_ext_[i].dot(z0); // Momen (Nm)
+                tau_out[i] = n_ext_[i].dot(z0);
             } else {
-                tau_out[i] = f_ext_[i].dot(z0); // Lực (N)
+                tau_out[i] = f_ext_[i].dot(z0);
             }
         }
     }

@@ -4,17 +4,28 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include <map> // Thêm map để lưu gain
 
 #include "controller_interface/controller_interface.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
+
+// INCLUDE CÁC MODULE ĐÃ VIẾT
 #include "rnea_control/rneasolver.hpp"
+#include "rnea_control/trajectory_generator.hpp"
+#include "rnea_control/kinematics_solver.hpp"   
+#include "rnea_control/cartesian_generator.hpp" 
 
 namespace rnea_control
 {
+
+// Enum để phân biệt chế độ điều khiển
+enum ControlMode {
+    MODE_IDLE,
+    MODE_JOINT_TRAJECTORY,    // Nội suy khớp (Spline)
+    MODE_CARTESIAN_TRAJECTORY // Nội suy đường thẳng (LSPB + CLIK)
+};
 
 class rneacontroller : public controller_interface::ControllerInterface
 {
@@ -33,30 +44,44 @@ public:
 protected:
   std::vector<std::string> joint_names_;
   size_t num_joints_;
-  std::unique_ptr<rnea_control::rneasolver> solver_;
 
-  // State vectors
-  std::vector<double> q_;         // Góc hiện tại
-  std::vector<double> dq_;        // Vận tốc hiện tại
+  // --- SOLVERS ---
+  std::unique_ptr<rnea_control::rneasolver> solver_;
+  std::unique_ptr<rnea_control::KinematicsSolver> kin_solver_; // <--- Mới: Tính FK, Jacobian
   
-  // Desired vectors (Mục tiêu)
-  std::vector<double> q_des_;     // Góc mong muốn (Target Position)
-  std::vector<double> dq_des_;    // Vận tốc mong muốn (Target Velocity)
-  std::vector<double> ddq_des_;   // Gia tốc mong muốn (Feedforward Accel)
+  // --- GENERATORS ---
+  std::vector<TrajectoryGenerator> traj_generators_; // Cho Joint Space
+  rnea_control::CartesianGenerator cart_gen_;        // Cho Cartesian Space (Mới)
+
+  // --- STATE VECTORS ---
+  std::vector<double> q_;
+  std::vector<double> dq_;
   
-  // Reference vector (Input cho RNEA sau khi cộng PD)
-  std::vector<double> ddq_ref_;   
-  
-  // Output Torque
+  // --- DESIRED VECTORS ---
+  std::vector<double> q_des_;
+  std::vector<double> dq_des_;
+  std::vector<double> ddq_des_;
+  std::vector<double> ddq_ref_;
   std::vector<double> tau_cmd_;
 
-  // Gains (Hệ số điều khiển)
+  // --- HELPER FOR CLIK ---
+  std::vector<double> dq_cmd_prev_; // Lưu vận tốc vòng trước để tính gia tốc
+
+  // --- GAINS ---
   std::vector<double> kp_;
   std::vector<double> kd_;
 
+  // --- CONTROL LOGIC ---
   rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr command_subscriber_;
+  rclcpp::Time motion_start_time_;
+  ControlMode control_mode_ = MODE_IDLE; // Biến lưu chế độ hiện tại
   
-  // Hàm callback
+  std_msgs::msg::Float64MultiArray::SharedPtr pending_command_;
+  bool has_pending_command_ = false;
+
+  // Cờ đánh dấu lần chạy đầu tiên để khởi tạo thời gian
+  bool is_first_update_ = true;
+
   void command_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg);
 };
 
