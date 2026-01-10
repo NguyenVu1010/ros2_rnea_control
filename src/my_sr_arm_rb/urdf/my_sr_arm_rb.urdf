@@ -361,7 +361,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="file:///home/nguyen1/ros2_rnea_control/src/my_sr_arm_rb/meshes1/Gripper1.STL" />
+          filename="file:///home/nguyen1/ros2_rnea_control/src/my_sr_arm_rb/meshes/Gripper1.STL" />
       </geometry>
       <material
         name="">
@@ -375,7 +375,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="file:///home/nguyen1/ros2_rnea_control/src/my_sr_arm_rb/meshes1/Gripper1.STL" />
+          filename="file:///home/nguyen1/ros2_rnea_control/src/my_sr_arm_rb/meshes/Gripper1.STL" />
       </geometry>
     </collision>
   </link>
@@ -419,7 +419,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="file:///home/nguyen1/ros2_rnea_control/src/my_sr_arm_rb/meshes1/Gripper2.STL" />
+          filename="file:///home/nguyen1/ros2_rnea_control/src/my_sr_arm_rb/meshes/Gripper2.STL" />
       </geometry>
       <material
         name="">
@@ -433,7 +433,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="file:///home/nguyen1/ros2_rnea_control/src/my_sr_arm_rb/meshes1/Gripper2.STL" />
+          filename="file:///home/nguyen1/ros2_rnea_control/src/my_sr_arm_rb/meshes/Gripper2.STL" />
       </geometry>
     </collision>
   </link>
