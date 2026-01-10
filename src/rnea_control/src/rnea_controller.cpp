@@ -293,7 +293,7 @@ controller_interface::return_type rneacontroller::update(const rclcpp::Time & ti
             Eigen::MatrixXd J_pinv = J_pos.completeOrthogonalDecomposition().pseudoInverse();
             
             Eigen::Vector3d error_pos = cart_des.p - p_curr;
-            double Kp_cart = 100.0;
+            double Kp_cart = 50.0;
             Eigen::Vector3d v_task = cart_des.v + Kp_cart * error_pos;
             Eigen::VectorXd dq_cmd = J_pinv * v_task;
 

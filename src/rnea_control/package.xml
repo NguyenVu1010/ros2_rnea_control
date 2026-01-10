@@ -12,6 +12,7 @@
   <depend>pluginlib</depend>
   <depend>eigen</depend>
   <export>
+    <build_type>ament_cmake</build_type>
     <controller_interface plugin="${prefix}/rnea_controller_plugins.xml" />
   </export>
 </package>
