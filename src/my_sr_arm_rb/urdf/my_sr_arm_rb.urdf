@@ -175,14 +175,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file:///home/nguyen1/ros2_rnea_control/src/my_sr_arm_rb/meshes1/link_5.STL" />
+        <mesh filename="file:///home/nguyen1/ros2_rnea_control/src/my_sr_arm_rb/meshes/link_5.STL" />
       </geometry>
       <material name=""><color rgba="0.75 0.75 0.75 1" /></material>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file:///home/nguyen1/ros2_rnea_control/src/my_sr_arm_rb/meshes1/link_5.STL" />
+        <mesh filename="file:///home/nguyen1/ros2_rnea_control/src/my_sr_arm_rb/meshes/link_5.STL" />
       </geometry>
     </collision>
   </link>
