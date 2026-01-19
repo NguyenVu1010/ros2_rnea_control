@@ -8,7 +8,8 @@ controller_manager:
 
     rnea_controller:
       type: rnea_control/rneacontroller
-    
+    gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
 rnea_controller:
   ros__parameters:
     # 1. Danh sách khớp
@@ -84,3 +85,19 @@ rnea_controller:
         p: [0.055, 0.0, 0.0]
         # Dựa vào p=[0.055, 0, 0], độ dài link a=0.055.
         dh_params: [0.055, 0.0, 0.0, 0.0]
+
+gripper_controller:
+  ros__parameters:
+    joints:
+      - joint_gripper1
+      - joint_gripper2
+    command_interfaces:
+      - position
+    
+    state_interfaces:
+      - position
+      - velocity
+
+    gains:
+      joint_gripper1: {p: 100.0, i: 0.0, d: 1.0}
+      joint_gripper2: {p: 100.0, i: 0.0, d: 1.0}

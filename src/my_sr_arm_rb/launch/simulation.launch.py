@@ -80,7 +80,14 @@ def generate_launch_description():
         arguments=["rnea_controller", "--controller-manager", "/controller_manager"],
         output='screen'
     )
-
+    # F. Spawner: Gripper Controller
+    load_gripper_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["gripper_controller", "--controller-manager", "/controller_manager"],
+        output='screen',
+        parameters=[{'use_sim_time': True}]
+    )
     # ========================================================================
     # 4. QUẢN LÝ TRÌNH TỰ CHẠY (EVENT HANDLERS)
     # ========================================================================
@@ -92,7 +99,12 @@ def generate_launch_description():
             on_exit=[load_joint_state_broadcaster],
         )
     )
-
+    delay_gripper_after_rnea = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=load_rnea_controller,
+            on_exit=[load_gripper_controller],
+        )
+    )
     # Đợi Joint State Broadcaster xong mới load RNEA Controller
     delay_rnea_after_jsb = RegisterEventHandler(
         event_handler=OnProcessExit(
@@ -106,5 +118,6 @@ def generate_launch_description():
         gazebo,
         spawn_entity,
         delay_jsb_after_spawn,
-        delay_rnea_after_jsb
+        delay_rnea_after_jsb,
+        delay_gripper_after_rnea
     ])
