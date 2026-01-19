@@ -8,7 +8,7 @@ controller_manager:
 
     rnea_controller:
       type: rnea_control/rneacontroller
-
+    
 rnea_controller:
   ros__parameters:
     # 1. Danh sách khớp

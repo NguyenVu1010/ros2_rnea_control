@@ -1,6 +1,9 @@
-<library path="rnea_control">
+<library path="rnea_controller">
   <class name="rnea_control/rneacontroller" 
          type="rnea_control::rneacontroller" 
          base_class_type="controller_interface::ControllerInterface">
+    <description>
+      RNEA Controller for custom robot.
+    </description>
   </class>
 </library>
