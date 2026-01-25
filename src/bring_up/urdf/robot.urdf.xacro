@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="my_sr_arm_rb">
+
+  <!-- 1. Include các module -->
+  <xacro:include filename="common_properties.xacro" />
+  <xacro:include filename="base.xacro" />
+  <xacro:include filename="arm.xacro" />
+  <xacro:include filename="gripper.xacro" />
+  <xacro:include filename="decorations.xacro" /> 
+  <xacro:include filename="ros2_control.xacro" />
+
+  <!-- 2. Gọi Macro để lắp ráp robot -->
+  
+  <!-- Tạo đế -->
+  <xacro:robot_base />
+
+  <xacro:robot_decorations parent="base_link" />
+
+  <!-- Gắn cánh tay vào base_link -->
+  <xacro:robot_arm parent="base_link" />
+
+  <!-- Gắn kẹp vào link_5 -->
+  <xacro:robot_gripper parent="link_5" />
+
+</robot>

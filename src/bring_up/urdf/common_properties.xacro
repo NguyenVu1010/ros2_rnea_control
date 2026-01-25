@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  
+  <!-- SỬA TÊN PACKAGE TẠI ĐÂY -->
+  <xacro:property name="package_name" value="bring_up"/>
+  
+  <!-- Đường dẫn mesh sẽ tự động cập nhật theo tên package trên -->
+  <xacro:property name="mesh_path" value="package://${package_name}/meshes"/>
+
+  <!-- Vật liệu giữ nguyên -->
+  <material name="grey">
+    <color rgba="0.75 0.75 0.75 1.0"/>
+  </material>
+  <material name="black">
+    <color rgba="0.1 0.1 0.1 1.0"/>
+  </material>
+  <material name="pink">
+    <color rgba="1 0.75 1 1"/>
+  </material>
+
+</robot>

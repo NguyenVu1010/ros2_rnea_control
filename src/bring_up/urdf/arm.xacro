@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="robot_arm" params="parent">
+    
+    <!-- LINK 1 -->
+    <link name="link_1">
+      <inertial>
+        <origin xyz="4.15e-16 1.37e-16 0.064" rpy="0 0 0" />
+        <mass value="0.83811" />
+        <inertia ixx="0.00485" ixy="-2.02e-17" ixz="7.02e-18" iyy="0.00485" iyz="-2.80e-18" izz="0.00964" />
+      </inertial>
+      <visual>
+        <geometry><mesh filename="${mesh_path}/link_1.STL" /></geometry>
+        <material name="grey"/>
+      </visual>
+      <collision>
+        <geometry><mesh filename="${mesh_path}/link_1.STL" /></geometry>
+      </collision>
+    </link>
+
+    <joint name="joint_1" type="prismatic">
+      <origin xyz="0 0 0.1175" rpy="0 0 0" />
+      <parent link="${parent}" />
+      <child link="link_1" />
+      <axis xyz="0 0 1" />
+      <limit lower="0" upper="0.25" effort="100" velocity="10" />
+      <dynamics damping="5.0" friction="2.0"/>
+    </joint>
+
+    <!-- LINK 2 -->
+    <link name="link_2">
+      <inertial>
+        <origin xyz="-1.88e-15 6.88e-16 0.030" rpy="0 0 0" />
+        <mass value="0.28679" />
+        <inertia ixx="0.00029" ixy="1.93e-06" ixz="5.88e-21" iyy="0.00037" iyz="2.26e-20" izz="0.00027" />
+      </inertial>
+      <visual>
+        <geometry><mesh filename="${mesh_path}/link_2.STL" /></geometry>
+        <material name="grey"/>
+      </visual>
+      <collision>
+        <geometry><mesh filename="${mesh_path}/link_2.STL" /></geometry>
+      </collision>
+    </link>
+
+    <joint name="joint_2" type="revolute">
+      <origin xyz="0 0 0.0705" rpy="0 0 0" />
+      <parent link="link_1" />
+      <child link="link_2" />
+      <axis xyz="0 0 1" />
+      <limit lower="-3.14" upper="3.14" effort="10" velocity="10" />
+      <dynamics damping="5.0" friction="2.0"/>
+    </joint>
+
+    <!-- LINK 3 -->
+    <link name="link_3">
+      <inertial>
+        <origin xyz="0.0853 -0.00036 0.00052" rpy="0 0 0" />
+        <mass value="0.4979" />
+        <inertia ixx="0.00345" ixy="0.00081" ixz="-4.41e-19" iyy="0.00061" iyz="6.23e-19" izz="0.00345" />
+      </inertial>
+      <visual>
+        <geometry><mesh filename="${mesh_path}/link_3.STL" /></geometry>
+        <material name="grey"/>
+      </visual>
+      <collision>
+        <geometry><mesh filename="${mesh_path}/link_3.STL" /></geometry>
+      </collision>
+    </link>
+
+    <joint name="joint_3" type="revolute">
+      <origin xyz="0 0 0.05" rpy="1.5708 0 -1.5708" />
+      <parent link="link_2" />
+      <child link="link_3" />
+      <axis xyz="0 0 1" />
+      <limit lower="0" upper="3.14" effort="10" velocity="10" />
+      <dynamics damping="5.0" friction="2.0"/>
+    </joint>
+
+    <!-- LINK 4 -->
+    <link name="link_4">
+      <inertial>
+        <origin xyz="0.0631 -0.00055 0.00038" rpy="0 0 0" />
+        <mass value="0.42728" />
+        <inertia ixx="0.00030" ixy="0.00045" ixz="8.53e-10" iyy="0.00160" iyz="2.24e-10" izz="0.00172" />
+      </inertial>
+      <visual>
+        <geometry><mesh filename="${mesh_path}/link_4.STL" /></geometry>
+        <material name="grey"/>
+      </visual>
+      <collision>
+        <geometry><mesh filename="${mesh_path}/link_4.STL" /></geometry>
+      </collision>
+    </link>
+
+    <joint name="joint_4" type="revolute">
+      <origin xyz="0.200 0 0" rpy="0 0 0" />
+      <parent link="link_3" />
+      <child link="link_4" />
+      <axis xyz="0 0 1" />
+      <limit lower="-1.57" upper="1.57" effort="10" velocity="10" />
+      <dynamics damping="5.0" friction="2.0"/>
+    </joint>
+
+    <!-- LINK 5 -->
+    <link name="link_5">
+      <inertial>
+        <origin xyz="0.0161 0.00034 0.0" rpy="0 0 0" />
+        <mass value="0.0474" />
+        <inertia ixx="9.91e-06" ixy="-8.17e-07" ixz="-1.07e-10" iyy="2.12e-05" iyz="-2.21e-10" izz="2.31e-05" />
+      </inertial>
+      <visual>
+        <geometry><mesh filename="${mesh_path}/link_5.STL" /></geometry>
+        <material name="grey"/>
+      </visual>
+      <collision>
+        <geometry><mesh filename="${mesh_path}/link_5.STL" /></geometry>
+      </collision>
+    </link>
+
+    <joint name="joint_5" type="revolute">
+      <origin xyz="0.1499 0 0" rpy="0 -0.006 0" />
+      <parent link="link_4" />
+      <child link="link_5" />
+      <axis xyz="0 0 1" />
+      <limit lower="-1.57" upper="1.57" effort="10" velocity="10" />
+      <dynamics damping="5.0" friction="2.0"/>
+    </joint>
+
+  </xacro:macro>
+</robot>

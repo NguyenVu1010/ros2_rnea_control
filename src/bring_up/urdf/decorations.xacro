@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="robot_decorations" params="parent">
+
+    <!-- ========================================================== -->
+    <!-- BÁNH PHỤ (CASTER WHEELS) -->
+    <!-- ========================================================== -->
+    <link name="banh_phu_1">
+      <inertial>
+        <origin xyz="0.009 -0.0002 -0.0003" rpy="0 0 0" />
+        <mass value="0.005" />
+        <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+      </inertial>
+      <visual>
+        <geometry><mesh filename="${mesh_path}/banh_phu_1.STL" /></geometry>
+        <material name="grey"/>
+      </visual>
+      <!-- KHÔNG CÓ COLLISION -->
+    </link>
+
+    <joint name="joint_bp_1" type="continuous">
+      <origin xyz="0 -0.1822 0.03" rpy="0 0 -1.0422" />
+      <parent link="${parent}" />
+      <child link="banh_phu_1" />
+      <axis xyz="0 0 1" />
+    </joint>
+
+    <link name="banh_phu_2">
+      <inertial>
+        <origin xyz="0 0 -0.015" rpy="0 0 0" />
+        <mass value="0.006" />
+        <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+      </inertial>
+      <visual>
+        <geometry><mesh filename="${mesh_path}/banh_phu_2.STL" /></geometry>
+        <material name="grey"/>
+      </visual>
+    </link>
+
+    <joint name="joint_bp_2" type="continuous">
+      <origin xyz="0.012 0.014 -0.015" rpy="-1.57 0 0" />
+      <parent link="banh_phu_1" />
+      <child link="banh_phu_2" />
+      <axis xyz="0 0 1" />
+    </joint>
+
+    <!-- ========================================================== -->
+    <!-- CÁC THANH TRANG TRÍ (SR LINKS) - NHÓM 1 -->
+    <!-- ========================================================== -->
+    <link name="link_sr_11">
+      <inertial><mass value="0.06"/><inertia ixx="1e-4" ixy="0" ixz="0" iyy="1e-4" iyz="0" izz="1e-4"/></inertial>
+      <visual>
+        <geometry><mesh filename="${mesh_path}/link_sr_11.STL" /></geometry>
+        <material name="grey"/>
+      </visual>
+    </link>
+    <joint name="joint_sr_11" type="revolute">
+      <origin xyz="0.135 -0.11 0.1175" rpy="-1.5708 0 -1.5708" />
+      <parent link="${parent}" />
+      <child link="link_sr_11" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.78" upper="0.78" effort="10" velocity="10"/>
+    </joint>
+
+    <link name="link_sr_21">
+      <inertial><mass value="0.08"/><inertia ixx="3e-4" ixy="0" ixz="0" iyy="2e-4" iyz="0" izz="3e-4"/></inertial>
+      <visual>
+        <geometry><mesh filename="${mesh_path}/link_sr_21.STL" /></geometry>
+        <material name="grey"/>
+      </visual>
+    </link>
+    <joint name="joint_sr_21" type="revolute">
+      <origin xyz="-0.125 -0.098 0" rpy="0 0 -2.475" />
+      <parent link="link_sr_11" />
+      <child link="link_sr_21" />
+      <axis xyz="0 0 1" />
+      <limit lower="-3.14" upper="3.14" effort="10" velocity="10"/>
+    </joint>
+
+    <!-- ========================================================== -->
+    <!-- CÁC THANH TRANG TRÍ - NHÓM 2 -->
+    <!-- ========================================================== -->
+    <link name="link_sr_12">
+      <inertial><mass value="0.06"/><inertia ixx="1e-4" ixy="0" ixz="0" iyy="1e-4" iyz="0" izz="1e-4"/></inertial>
+      <visual>
+        <geometry><mesh filename="${mesh_path}/link_sr_11.STL" /></geometry>
+        <material name="grey"/>
+      </visual>
+    </link>
+    <joint name="joint_sr_12" type="revolute">
+      <origin xyz="0.11 0.135 0.1175" rpy="-1.5708 0 0" />
+      <parent link="${parent}" />
+      <child link="link_sr_12" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.75" upper="0.75" effort="10" velocity="10"/>
+    </joint>
+
+    <link name="link_sr_22">
+      <inertial><mass value="0.08"/><inertia ixx="3e-4" ixy="0" ixz="0" iyy="2e-4" iyz="0" izz="3e-4"/></inertial>
+      <visual>
+        <geometry><mesh filename="${mesh_path}/link_sr_21.STL" /></geometry>
+        <material name="grey"/>
+      </visual>
+    </link>
+    <joint name="joint_sr_22" type="revolute">
+      <origin xyz="-0.125 -0.098 0" rpy="0 0 -2.475" />
+      <parent link="link_sr_12" />
+      <child link="link_sr_22" />
+      <axis xyz="0 0 1" />
+      <limit lower="-3.14" upper="3.14" effort="10" velocity="10"/>
+    </joint>
+
+    <!-- ========================================================== -->
+    <!-- CÁC THANH TRANG TRÍ - NHÓM 3 -->
+    <!-- ========================================================== -->
+    <link name="link_sr_13">
+      <inertial><mass value="0.06"/><inertia ixx="1e-4" ixy="0" ixz="0" iyy="1e-4" iyz="0" izz="1e-4"/></inertial>
+      <visual>
+        <geometry><mesh filename="${mesh_path}/link_sr_11.STL" /></geometry>
+        <material name="grey"/>
+      </visual>
+    </link>
+    <joint name="joint_sr_13" type="revolute">
+      <origin xyz="-0.135 0.11 0.1175" rpy="-1.5708 0 1.5708" />
+      <parent link="${parent}" />
+      <child link="link_sr_13" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.78" upper="0.78" effort="10" velocity="10"/>
+    </joint>
+
+    <link name="link_sr_23">
+      <inertial><mass value="0.08"/><inertia ixx="3e-4" ixy="0" ixz="0" iyy="2e-4" iyz="0" izz="3e-4"/></inertial>
+      <visual>
+        <geometry><mesh filename="${mesh_path}/link_sr_21.STL" /></geometry>
+        <material name="grey"/>
+      </visual>
+    </link>
+    <joint name="joint_sr_23" type="revolute">
+      <origin xyz="-0.125 -0.098 0" rpy="0 0 -2.475" />
+      <parent link="link_sr_13" />
+      <child link="link_sr_23" />
+      <axis xyz="0 0 1" />
+      <limit lower="-3.14" upper="3.14" effort="10" velocity="10"/>
+    </joint>
+
+    <!-- ========================================================== -->
+    <!-- CÁC THANH TRANG TRÍ - NHÓM 4 -->
+    <!-- ========================================================== -->
+    <link name="link_sr_14">
+      <inertial><mass value="0.06"/><inertia ixx="1e-4" ixy="0" ixz="0" iyy="1e-4" iyz="0" izz="1e-4"/></inertial>
+      <visual>
+        <geometry><mesh filename="${mesh_path}/link_sr_11.STL" /></geometry>
+        <material name="grey"/>
+      </visual>
+    </link>
+    <joint name="joint_sr_14" type="continuous">
+      <origin xyz="-0.11 -0.135 0.1175" rpy="-1.5708 0 -3.1415" />
+      <parent link="${parent}" />
+      <child link="link_sr_14" />
+      <axis xyz="0 0 1" />
+    </joint>
+
+    <link name="link_sr_24">
+      <inertial><mass value="0.08"/><inertia ixx="3e-4" ixy="0" ixz="0" iyy="2e-4" iyz="0" izz="3e-4"/></inertial>
+      <visual>
+        <geometry><mesh filename="${mesh_path}/link_sr_21.STL" /></geometry>
+        <material name="grey"/>
+      </visual>
+    </link>
+    <joint name="joint_sr_24" type="revolute">
+      <origin xyz="-0.125 -0.098 0" rpy="0 0 -2.475" />
+      <parent link="link_sr_14" />
+      <child link="link_sr_24" />
+      <axis xyz="0 0 1" />
+      <limit lower="-3.14" upper="3.14" effort="10" velocity="10"/>
+    </joint>
+
+  </xacro:macro>
+</robot>

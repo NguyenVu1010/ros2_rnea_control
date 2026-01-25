@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="robot_gripper" params="parent">
+    
+    <!-- GRIPPER 1 -->
+    <link name="gripper1">
+      <inertial>
+        <origin xyz="-0.024 0 0.006" rpy="0 0 0" />
+        <mass value="0.0089" />
+        <inertia ixx="3.20e-07" ixy="0" ixz="0" iyy="1.21e-06" iyz="0" izz="1.23e-06" />
+      </inertial>
+      <visual>
+        <geometry><mesh filename="${mesh_path}/Gripper1.STL" /></geometry>
+        <material name="pink"/>
+      </visual>
+      <collision>
+        <geometry><mesh filename="${mesh_path}/Gripper1.STL" /></geometry>
+      </collision>
+    </link>
+
+    <joint name="joint_gripper1" type="prismatic">
+      <origin xyz="0.093 0 0" rpy="0.043 0 0" />
+      <parent link="${parent}" />
+      <child link="gripper1" />
+      <axis xyz="0 0 -1" />
+      <limit lower="-0.02" upper="0" effort="10" velocity="1" />
+    </joint>
+
+    <!-- GRIPPER 2 -->
+    <link name="gripper2">
+      <inertial>
+        <origin xyz="-0.024 0 0.006" rpy="0 0 0" />
+        <mass value="0.0089" />
+        <inertia ixx="3.20e-07" ixy="0" ixz="0" iyy="1.21e-06" iyz="0" izz="1.23e-06" />
+      </inertial>
+      <visual>
+        <geometry><mesh filename="${mesh_path}/Gripper2.STL" /></geometry>
+        <material name="pink"/>
+      </visual>
+      <collision>
+        <geometry><mesh filename="${mesh_path}/Gripper2.STL" /></geometry>
+      </collision>
+    </link>
+
+    <joint name="joint_gripper2" type="prismatic">
+      <origin xyz="0.093 0 0" rpy="-3.097 0 0" />
+      <parent link="${parent}" />
+      <child link="gripper2" />
+      <axis xyz="0 0 1" />
+      <limit lower="0" upper="0.02" effort="10" velocity="1" />
+    </joint>
+
+  </xacro:macro>
+</robot>
